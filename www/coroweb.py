@@ -27,7 +27,7 @@ post = functools.partial(Handler_decorator,method = 'POST')
 
 def get_required_kw_args(fn):
     args = []
-    params = inspect.signature(fn).parameters
+    params = inspect.signature(fn).parameters#inspect依据文档https://docs.python.org/3/library/inspect.html?highlight=inspect#module-inspect
     for name, param in params.items():
         if param.kind == inspect.Parameter.KEYWORD_ONLY and param.default == inspect.Parameter.empty:
             args.append(name)
@@ -82,7 +82,7 @@ class RequestHandler(object):
         if self._has_var_kw_arg or self._has_named_kw_args or self._required_kw_args:
             if request.method == 'POST':
                 if not request.content_type:
-                    return web.HTTPBadRequest('Missing Content-Type.')
+                    return web.HTTPBadRequest(text='Missing Content-Type.')
                 ct = request.content_type.lower()
                 if ct.startswith('application/json'):
                     params = yield from request.json()
